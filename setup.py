@@ -3,6 +3,7 @@ Setup script for PyPi
 """
 
 from distutils.core import setup
+
 setup(
     name='process_data_vicaaya',
     version='0.0.1',
@@ -12,7 +13,6 @@ setup(
     author_email='pramish.paudel123@gmail.com',
     url='https://pramishp.github.io/',
     keywords="",
-    py_modules=['scrapy_mongodb'],
     platforms=['Any'],
     install_requires=[
         'anitopy >= 2.0.0',
