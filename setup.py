@@ -7,6 +7,7 @@ from distutils.core import setup
 setup(
     name='process_data_vicaaya',
     version='0.0.1',
+    packages=['process_data_vicaaya', 'process_data_vicaaya.Stream'],
     license='Apache License, Version 2.0',
     description='Post processing for one of my project',
     author='Pramish Paudel',
