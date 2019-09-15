@@ -1,8 +1,12 @@
-stream_types = {
+stream_types_2_id = {
     "movie": 0,
     "movies": 0,
     "tv-show": 1,
     "tv-shows": 1,
+    "anime": 2,
+    "animes": 2,
+    "anime-movie": 3,
+    "anime-movies": 3
 }
 
 mapper = {
@@ -16,11 +20,18 @@ mapper = {
     "s_i_link": "site_link",
     "s_i_images": "site_images",
     "h_i_title": "h_name",
-    "s_i_quality": "quality",
     "s_e_no": "s_e_no"
 }
 
 NAME_CLEANER_PATTERNS = [
-    r"Watch\s(.*)\sOnline$",
+    r"Watch\s(.*)\sOnline",
     r"Watch (.*) Full Movie Online Free"
+]
+
+HOST_NAME_EXCEPTION_PATTERNS = [
+    r"movie_[0-9]+\.mp4"
+]
+
+DOMAIN_NAMES_WHITELIST = [
+    "watchonlinemovies.com.pk"
 ]
