@@ -116,13 +116,13 @@ def get_title_from_name(name):
 
 
 def get_domain_from_url(url):
-    if not url:
+    if not is_string(url):
         return None
     pattern = r"^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)"
     matched = re.findall(pattern, url)
     if not is_empty(matched):
         # check if whitelisted
-        from data_post_processing import DOMAIN_NAMES_WHITELIST
+        from process_data_vicaaya import DOMAIN_NAMES_WHITELIST
         domain_white_list = list(filter(lambda domain: domain in matched, DOMAIN_NAMES_WHITELIST))
         if len(domain_white_list) > 0:
             return domain_white_list[0]
@@ -132,6 +132,12 @@ def get_domain_from_url(url):
             return '.'.join(splited_match[1:])
         return matched[0]
     return None
+
+
+def is_string(string):
+    if not string: return False
+    if isinstance(string, str):  return True
+    return False
 
 
 def get_number_from_string(text):
