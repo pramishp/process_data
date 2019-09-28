@@ -26,9 +26,6 @@ def shingle_transform(text, min=2, max=3, split_by=" "):
     return final_list
 
 
-result = anitopy.parse("Season 1 Episode 5-8")
-ptn_result = PTN.parse("Season 1 Episode 5-8")
-item = {"a": 2}
-s_item = copy.deepcopy(item)
-item["a"] = 3
-print(s_item)
+strip_title = lambda x: x.strip()
+stripped_titles = list(map(strip_title, [" cat ", " fairy ", "     fan    ", "   foam  "]))
+print(stripped_titles)

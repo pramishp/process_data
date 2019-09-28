@@ -209,13 +209,17 @@ class BaseStream(ABC):
         # season
         season = s_e_no["season"]
         season = str(season) if season else None
+
+        strip_title = lambda x: x.strip()
+        stripped_titles = list(map(strip_title, self.get_titles()))
+
         return {
             # "unique_key": self.get_id(),
             "s_id": self.site_id,
             "host_id": self.host_id,
             "embed_link": self.embed_link,
-            "search_titles": self.get_titles(),
-            # "completion_suggestions": {"input": self.get_suggestions()},
+            "search_titles": stripped_titles,
+            "completion_suggestions": {"input": stripped_titles},
             "title": self.get_display_title(),
             "s_name": self.s_name,
             "h_name": self.h_name,
@@ -231,5 +235,4 @@ class BaseStream(ABC):
             "views": 0,
             "site_link": self.site_link,
             "created_at": self.get_datetime_obj().strftime("%Y-%m-%d %H:%M:%S"),
-
         }
