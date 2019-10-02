@@ -4,11 +4,12 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 
 import PTN
+from process_data_vicaaya import get_matching_pattern, HOST_NAME_EXCEPTION_PATTERNS
 
 from process_data_vicaaya.constants import stream_types_2_id, NAME_CLEANER_PATTERNS
-from process_data_vicaaya.lab import shingle_transform
 from process_data_vicaaya.utils import dict_2_default_dict, get_domain_from_url, \
-    parse_episode_from_name, get_title_from_name, get_episode_number_or_range_string
+    parse_episode_from_name, get_title_from_name, get_episode_number_or_range_string, suggestion_transform, \
+    none_to_null_transform
 
 
 class BaseStream(ABC):
@@ -66,6 +67,12 @@ class BaseStream(ABC):
             raise Exception("couldn't match datetime format")
         return datetime_obj
 
+    def is_host_name_invalid(self):
+        host_name_exception_matched_pattern = get_matching_pattern(HOST_NAME_EXCEPTION_PATTERNS, self.h_name)
+        if host_name_exception_matched_pattern:
+            return True
+        return False
+
     def get_cleaned_name(self, name):
         """
          if is_empty(name):
@@ -91,7 +98,7 @@ class BaseStream(ABC):
 
     @abstractmethod
     def get_display_title(self):
-        return self.get_title()
+        return self.get_title().strip()
 
     def parse_info_from_name(self, name):
         if name:
@@ -117,7 +124,11 @@ class BaseStream(ABC):
         released_year = self.s_info["year"]
         if not released_year:
             released_year = self.h_info['year']
-        return released_year
+        try:
+            released_year = int(released_year)
+            return str(released_year)
+        except:
+            return None
 
     def get_quality(self):
         if self.quality:
@@ -175,9 +186,9 @@ class BaseStream(ABC):
     def get_suggestions(self):
         suggestions = []
         for title in self.get_titles():
-            shingles = shingle_transform(title)
+            shingles = suggestion_transform(title.strip())
             suggestions = [*suggestions, *shingles]
-        return suggestions
+        return list(set(suggestions))
 
     def get_host_id(self):
         if self.embed_link:
@@ -210,16 +221,13 @@ class BaseStream(ABC):
         season = s_e_no["season"]
         season = str(season) if season else None
 
-        strip_title = lambda x: x.strip()
-        stripped_titles = list(map(strip_title, self.get_titles()))
-
-        return {
-            # "unique_key": self.get_id(),
+        final_dict = {
+            "unique_key": self.get_id(),
             "s_id": self.site_id,
             "host_id": self.host_id,
             "embed_link": self.embed_link,
-            "search_titles": stripped_titles,
-            "completion_suggestions": {"input": stripped_titles},
+            "search_titles": self.get_titles(),
+            "completion_suggestions": {"input": self.get_suggestions()},
             "title": self.get_display_title(),
             "s_name": self.s_name,
             "h_name": self.h_name,
@@ -233,6 +241,11 @@ class BaseStream(ABC):
             "tags": self.get_tags(),
             "ads_frequency": self.get_ads_frequency(),
             "views": 0,
+            "report_count": 0,
+            "reported": False,
+            "report_verified": False,
             "site_link": self.site_link,
             "created_at": self.get_datetime_obj().strftime("%Y-%m-%d %H:%M:%S"),
         }
+
+        return none_to_null_transform(final_dict)

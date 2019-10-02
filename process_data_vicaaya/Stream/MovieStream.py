@@ -1,11 +1,11 @@
-from process_data_vicaaya import get_matching_pattern, HOST_NAME_EXCEPTION_PATTERNS
+from process_data_vicaaya import strip_strings, remove_empty_items
 from process_data_vicaaya.Stream.BaseStream import BaseStream
 
 
 class MovieStream(BaseStream):
     NAME_FORMATS = [
         "{title} {year}",
-        "{title} {quality}"
+        "{title} {quality}",
         "{title} {year} {quality}",
         "{title} {quality} {year}"
     ]
@@ -15,8 +15,7 @@ class MovieStream(BaseStream):
 
     def get_display_title(self):
         if self.h_name and self.s_extracted_name:
-            host_name_exception_matched_pattern = get_matching_pattern(HOST_NAME_EXCEPTION_PATTERNS, self.h_name)
-            if len(self.h_name) > len(self.s_extracted_name) and not host_name_exception_matched_pattern:
+            if len(self.h_name) > len(self.s_extracted_name) and not self.is_host_name_invalid():
                 return self.h_name
         if self.s_name:
             return self.s_name
@@ -29,7 +28,7 @@ class MovieStream(BaseStream):
         titles = []
         if self.s_name:
             titles.append(self.s_name)
-        if self.h_name:
+        if self.h_name and not self.is_host_name_invalid():
             titles.append(self.h_name)
         if cleaned_s_name:
             titles.append(cleaned_s_name)
@@ -47,4 +46,7 @@ class MovieStream(BaseStream):
                     quality=quality if quality else ""
                 )
                 titles.append(cleaned_name)
-        return titles
+        stripped_titles = strip_strings(titles)
+        stripped_titles = remove_empty_items(stripped_titles)
+
+        return list(set(stripped_titles))

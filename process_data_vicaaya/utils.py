@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-
+import re
 import PTN
 import anitopy
 
@@ -171,3 +171,51 @@ def shingle_transform(text, min_shingle=2, max_shingle=3, split_by=" "):
         list_of_shingles_list.append([' '.join(word_list[i:i + w]) for i in range(len(word_list) - w + 1)])
     final_list = [shingle for shingles in list_of_shingles_list for shingle in shingles]
     return final_list
+
+
+def normalizer(text):
+    things_2_keep = r"[a-zA-Z0-9]+"
+    normalized_text = re.findall(things_2_keep, text)
+    if normalized_text:
+        return ' '.join(normalized_text)
+    return None
+
+
+def concat_list(word_list, index=0, sentence="", sentences=None):
+    if sentences is None:
+        sentences = []
+    sentence += word_list[index] + " "
+    sentences.append(sentence.strip())
+    if len(word_list) == index + 1: return sentences
+    index += 1
+    return concat_list(word_list, index, sentence, sentences)
+
+
+def suggestion_transform(text, split_by=" "):
+    normalized_text = normalizer(text)
+    word_list = normalized_text.split(split_by)
+    suggestion_list = concat_list(word_list)
+    return suggestion_list
+
+
+def none_to_null_transform(m_dict):
+    if len(m_dict.keys()) == 0: return m_dict
+    import copy
+    c_dict = copy.deepcopy(m_dict)
+    for key in c_dict:
+        if c_dict[key] is None:
+            from process_data_vicaaya import NULL_KEY
+            c_dict[key] = NULL_KEY
+    return c_dict
+
+
+def remove_empty_items(m_list):
+    if m_list and isinstance(m_list, list):
+        return list(filter(lambda x: x.strip() != "", m_list))
+    return m_list
+
+
+def strip_strings(m_list):
+    if m_list and isinstance(m_list, list):
+        return list(map(lambda x: x.strip(), m_list))
+    return m_list

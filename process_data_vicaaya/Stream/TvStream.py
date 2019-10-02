@@ -1,5 +1,6 @@
 from process_data_vicaaya.Stream.BaseStream import BaseStream
-from process_data_vicaaya.utils import is_empty, parse_episode_from_name, get_episode_number_or_range_string
+from process_data_vicaaya.utils import is_empty, parse_episode_from_name, get_episode_number_or_range_string, \
+    remove_empty_items, strip_strings
 
 
 class TvStream(BaseStream):
@@ -50,7 +51,7 @@ class TvStream(BaseStream):
         if not s_e_no_title["episode"]:
             episode = get_episode_number_or_range_string(episode)
             title = title + f" episode {episode}"
-        return title
+        return title.strip()
 
     def get_titles(self):
         e_s = self.get_episode_season()
@@ -60,7 +61,7 @@ class TvStream(BaseStream):
         titles = []
         if self.s_name:
             titles.append(self.s_name)
-        if self.h_name:
+        if self.h_name and not self.is_host_name_invalid():
             titles.append(self.h_name)
         if cleaned_s_name:
             titles.append(cleaned_s_name)
@@ -88,4 +89,7 @@ class TvStream(BaseStream):
                     titles.append(cleaned_name)
             except:
                 pass
-        return titles
+
+        modified_titles = remove_empty_items(titles)
+        modified_titles = strip_strings(modified_titles)
+        return list(set(modified_titles))

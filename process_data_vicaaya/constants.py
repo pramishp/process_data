@@ -1,3 +1,5 @@
+NULL_KEY = "_NULL_"
+
 stream_types_2_id = {
     "movie": 0,
     "movies": 0,
@@ -35,3 +37,18 @@ HOST_NAME_EXCEPTION_PATTERNS = [
 DOMAIN_NAMES_WHITELIST = [
     "watchonlinemovies.com.pk"
 ]
+
+
+HOST_ADS_FREQUENCY = {
+    "idtbox.com": 8,
+    "vidlox.tv": 6,
+    "vidlox.me": 6,
+    "vshare.eu": 4,
+    "clipwatching.com": 10, # ads blocker not allowed
+    "openload.co": 15, # (openload.vip) offensive ads - no ads with adblocker
+    "loadvid.online": 6,
+    "oload.life": 15,
+    "streamango.com": 6,
+    "vidlocker.xyz": 0,
+    "vidcloud.co": 4
+}
