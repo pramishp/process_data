@@ -46,9 +46,9 @@ class TvStream(BaseStream):
         title = self.s_extracted_name
         s_e_no_title = parse_episode_from_name(title)
 
-        if not s_e_no_title["season"]:
+        if s_e_no_title["season"]:
             title = title + " season " + str(season)
-        if not s_e_no_title["episode"]:
+        if s_e_no_title["episode"]:
             episode = get_episode_number_or_range_string(episode)
             title = title + f" episode {episode}"
         return title.strip()

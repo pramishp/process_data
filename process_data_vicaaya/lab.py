@@ -2,6 +2,7 @@ import copy
 import re
 
 from process_data_vicaaya import NULL_KEY, remove_empty_items
+from elasticsearch import Elasticsearch
 
 
 def normalizer(text):
@@ -32,4 +33,38 @@ def suggestion_transform(text, split_by=" "):
 
 suggestions = suggestion_transform("Taxing Love")
 
-print(remove_empty_items(["a", "  "]))
+# print(remove_empty_items(["a", "  "]))
+
+from ssl import create_default_context
+
+
+# es = Elasticsearch(
+#     ['167.86.85.184'],
+#     http_auth=('elastic', 'elasticsearch'),
+#     scheme='http',
+#     port=9200
+# )
+
+
+# print(es.ping())
+
+def calculate_simultaneous_connection(page_load_time, number_of_cores):
+    """
+
+    :param page_load_time:  in seconds
+    :param number_of_cores:
+    :return:
+    """
+    return number_of_cores / page_load_time
+
+
+def calculate_simultaneous_user(clicks_per_minute, page_load_time, num_cores):
+
+    return clicks_per_minute * calculate_simultaneous_connection(page_load_time, num_cores)
+
+
+number_of_cores = 4
+page_load_time = 0.1  # in seconds
+click_per_minute = 40
+print(f"{calculate_simultaneous_connection(page_load_time, number_of_cores)} connection simultaneously")
+# print(f"{calculate_simultaneous_user(click_per_minute, page_load_time, number_of_cores)} users simultaneously")
