@@ -26,7 +26,7 @@ class BaseStream(ABC):
         self.site_link = data['site_link']
         self.site_id = self.get_site_id()
         self.site_item_id = data['site_item_id']
-        self.s_name = data['s_name']
+        self.s_name = data['s_name'] if data['s_name'] else data["title"]
         self.s_e_no = data['s_e_no'] if data['s_e_no'] else None
 
         # qualities
@@ -110,6 +110,8 @@ class BaseStream(ABC):
         return dict_2_default_dict({"year": None, "title": None, "quality": None})
 
     def get_episode_season(self):
+        if isinstance(self.s_e_no, dict) and (self.s_e_no["season"] or self.s_e_no["episode"]):
+            return self.s_e_no
         if self.s_e_no and len(self.s_e_no) > 2:
             s_e = parse_episode_from_name(self.s_e_no)
             if s_e["season"] and s_e["episode"]:
@@ -246,6 +248,7 @@ class BaseStream(ABC):
             "report_verified": False,
             "site_link": self.site_link,
             "created_at": self.get_datetime_obj().strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.get_datetime_obj().strftime("%Y-%m-%d %H:%M:%S")
         }
 
         return none_to_null_transform(final_dict)

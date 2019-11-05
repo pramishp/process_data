@@ -11,62 +11,41 @@ from process_data_vicaaya.utils import dict_2_default_dict, map_dict_fields
 #     json_str = file.read()
 #     stream_list = json.loads(json_str)
 
-single_data = {
-    "unique_key": "2f310e7a-2a9c-5604-839b-f3668b7da32e",
-    "s_id": "cmovies.video",
-    "host_id": "gcloud.live",
-    "embed_link": "https://gcloud.live/v/4lv0yklwxoq",
-    "search_titles": [
-        "City Hunter",
-        "Video city-hunter-episode-19-a-beach-to-remember-an-audition-full-of-danger.mp4",
-        "City Hunter"
-    ],
-    "completion_suggestions": {
-        "input": [
-            "Video city hunter episode 19 a beach to remember",
-            "Video city hunter episode 19 a",
-            "Video city hunter episode 19",
-            "Video city",
-            "City",
-            "Video city hunter episode",
-            "Video city hunter episode 19 a beach to remember an audition full of danger",
-            "Video city hunter episode 19 a beach",
-            "City Hunter",
-            "Video city hunter episode 19 a beach to remember an audition",
-            "Video city hunter episode 19 a beach to remember an",
-            "Video city hunter episode 19 a beach to remember an audition full of danger mp4",
-            "Video city hunter episode 19 a beach to remember an audition full of",
-            "Video",
-            "Video city hunter episode 19 a beach to remember an audition full",
-            "Video city hunter episode 19 a beach to",
-            "Video city hunter"
-        ]
-    },
-    "title": "City Hunter season None episode",
-    "s_name": "City Hunter",
-    "h_name": "Video city-hunter-episode-19-a-beach-to-remember-an-audition-full-of-danger.mp4",
-    "poster": "https://cdn.watch-series.co/cover/city-hunter-large.png",
-    "stream_type": "tv-show",
-    "stream_type_id": 1,
-    "imdb_id": "_None_",
-    "s_e_no": {
-        "season": None,
-        "episode": None
-    },
-    "episode_in_range": False,
-    "quality": "_None_",
-    "tags": [],
-    "ads_frequency": 0,
-    "views": 0,
-    "report_count": 0,
-    "reported": False,
-    "report_verified": False,
-    "site_link": "https://www.cmovies.video/film/city-hunter/watching.html?ep=19",
-    "created_at": "2019-10-02 21:11:28"
-}
+single_data = {"_id": "5d809423dee01c6e956a2528", "s_id": "vumoo.life", "host_id": "gomostream.com",
+     "embed_link": "https://gomostream.com/show/a-place-to-call-home/01-03",
+     "search_titles": ["A Place To Call Home - PutStream", "A Place To Call Home - PutStream",
+                       "A Place To Call Home - PutStream s1e3", "A Place To Call Home - PutStream s1e3",
+                       "A Place To Call Home - PutStream s1 e3", "A Place To Call Home - PutStream s1 e3",
+                       "A Place To Call Home - PutStream season1 serie3",
+                       "A Place To Call Home - PutStream season1 serie3",
+                       "A Place To Call Home - PutStream season 1 serie 3",
+                       "A Place To Call Home - PutStream season 1 serie 3",
+                       "A Place To Call Home - PutStream episode 3", "A Place To Call Home - PutStream episode 3",
+                       "A Place To Call Home - PutStream season 1 episode 3",
+                       "A Place To Call Home - PutStream season 1 episode 3", "A Place To Call Home - PutStream s01e03",
+                       "A Place To Call Home - PutStream s01e03", "A Place To Call Home - PutStream s01 e03",
+                       "A Place To Call Home - PutStream s01 e03", "A Place To Call Home - PutStream s1 e3",
+                       "A Place To Call Home - PutStream s1 e3", "A Place To Call Home - PutStream s1e3",
+                       "A Place To Call Home - PutStream s1e3", "A Place To Call Home - PutStream season01 episode03",
+                       "A Place To Call Home - PutStream season01 episode03",
+                       "A Place To Call Home - PutStream season1 episode3",
+                       "A Place To Call Home - PutStream season1 episode3",
+                       "A Place To Call Home - PutStream season 01 episode 03",
+                       "A Place To Call Home - PutStream season 01 episode 03",
+                       "A Place To Call Home - PutStream season 1 episode 3",
+                       "A Place To Call Home - PutStream season 1 episode 3", "A Place To Call Home - PutStream 1x03",
+                       "A Place To Call Home - PutStream 1x03", "A Place To Call Home - PutStream 01x03",
+                       "A Place To Call Home - PutStream 01x03", "A Place To Call Home - PutStream 01x3",
+                       "A Place To Call Home - PutStream 01x3"],
+     "title": "A Place To Call Home - PutStream season 1 episode 3", "h_name": "A Place To Call Home - PutStream",
+     "stream_type": "tv-shows", "stream_type_id": 1, "s_e_no": {"season": "1", "episode": "3"},
+     "episode_in_range": False, "tags": [], "ads_frequency": 0, "views": 0,
+     "site_link": "https://vumoo.life/episodes/a-place-to-call-home-1x3/", "created_at": "2019-09-20 02:48:10",
+     "scrapy-mongodb": {"ts": "2019-09-19T21:04:00.112Z"}}
+
 
 single_movie = dict_2_default_dict(map_dict_fields(single_data, mapper))
 # single_stream = dict_2_default_dict(map_dict_fields(stream_list[0], mapper))
 # tv_stream = MovieStream(single_stream)
 movie_stream = TvStream(single_movie)
-print(json.dumps(movie_stream.get_display_title()))
+print(json.dumps(movie_stream.get_data()))
