@@ -47,6 +47,13 @@ class BaseStream(ABC):
         self.s_extracted_name = self.get_title()
         self.created_at = data['created_at'] if data['created_at'] else datetime.now()
 
+    def get_poster(self):
+        if self.poster:
+            if isinstance(self.poster, list) and len(self.poster) > 0:
+                return self.poster[0]
+            return self.poster
+        return None
+
     def check_imdb_id(self, imdb_id):
         if not imdb_id:
             return None
@@ -233,7 +240,7 @@ class BaseStream(ABC):
             "title": self.get_display_title(),
             "s_name": self.s_name,
             "h_name": self.h_name,
-            "poster": self.poster,
+            "poster": self.get_poster(),
             "stream_type": self.stream_type,
             "stream_type_id": self.stream_type_id,
             "imdb_id": self.imdb_id,
