@@ -39,7 +39,7 @@ single_data = {"_id": "5d809423dee01c6e956a2528", "s_id": "vumoo.life", "host_id
                        "A Place To Call Home - PutStream 01x3"],
      "title": "A Place To Call Home - PutStream season 1 episode 3", "h_name": "A Place To Call Home - PutStream",
      "stream_type": "tv-shows", "stream_type_id": 1, "s_e_no": {"season": "1", "episode": "3"},
-     "episode_in_range": False, "tags": [], "ads_frequency": 0, "views": 0,
+     "episode_in_range": False, "tags": ["hd-tv"], "ads_frequency": 0, "views": 0,
      "site_link": "https://vumoo.life/episodes/a-place-to-call-home-1x3/", "created_at": "2019-09-20 02:48:10",
      "scrapy-mongodb": {"ts": "2019-09-19T21:04:00.112Z"}}
 
@@ -48,4 +48,4 @@ single_movie = dict_2_default_dict(map_dict_fields(single_data, mapper))
 # single_stream = dict_2_default_dict(map_dict_fields(stream_list[0], mapper))
 # tv_stream = MovieStream(single_stream)
 movie_stream = TvStream(single_movie)
-print(json.dumps(movie_stream.get_poster()))
+print(movie_stream.get_tags())

@@ -1,5 +1,6 @@
 import copy
 import re
+from newsplease import NewsPlease
 
 from process_data_vicaaya import NULL_KEY, remove_empty_items
 from elasticsearch import Elasticsearch

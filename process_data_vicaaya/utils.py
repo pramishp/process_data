@@ -219,3 +219,10 @@ def strip_strings(m_list):
     if m_list and isinstance(m_list, list):
         return list(map(lambda x: x.strip(), m_list))
     return m_list
+
+
+def clean_title(title):
+
+    # remove alpha numeric character
+
+    return re.sub(r"\W+", " ", title)

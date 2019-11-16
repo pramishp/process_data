@@ -9,7 +9,7 @@ from process_data_vicaaya import get_matching_pattern, HOST_NAME_EXCEPTION_PATTE
 from process_data_vicaaya.constants import stream_types_2_id, NAME_CLEANER_PATTERNS
 from process_data_vicaaya.utils import dict_2_default_dict, get_domain_from_url, \
     parse_episode_from_name, get_title_from_name, get_episode_number_or_range_string, suggestion_transform, \
-    none_to_null_transform
+    none_to_null_transform, is_empty, clean_title
 
 
 class BaseStream(ABC):
@@ -37,6 +37,9 @@ class BaseStream(ABC):
         # size
         self.size = data['h_i_size'] if data['h_i_size'] else None
 
+        # if 'tags' is available
+        self.tags = data["tags"] if data["tags"] else []
+
         self.stream_type = data['stream_type']
         self.stream_type_id = stream_types_2_id[data['stream_type']]
         self.release_date = data['release_date'] if data['release_date'] else None
@@ -51,7 +54,8 @@ class BaseStream(ABC):
         if self.poster:
             if isinstance(self.poster, list) and len(self.poster) > 0:
                 return self.poster[0]
-            return self.poster
+            if not is_empty(self.poster):
+                return self.poster
         return None
 
     def check_imdb_id(self, imdb_id):
@@ -105,6 +109,7 @@ class BaseStream(ABC):
 
     @abstractmethod
     def get_display_title(self):
+
         return self.get_title().strip()
 
     def parse_info_from_name(self, name):
@@ -170,16 +175,18 @@ class BaseStream(ABC):
         resolution = self.get_resolution()
         size = self.get_size()
         item_type = self.stream_type
-        tags = []
         if quality:
-            tags.append(quality.lower())
+            self.tags.append(quality.lower())
         if resolution:
-            tags.append(resolution.lower())
+            self.tags.append(resolution.lower())
         # if size:
         #     tags.append(size.lower())
         if item_type and "anime" in item_type:
-            tags.append(item_type.lower())
-        return tags
+            self.tags.append(item_type.lower())
+
+        # keeps only the alphanumeric characters
+        self.tags = list(map(lambda x: re.sub(r"\W+", "", x), self.tags))
+        return self.tags
 
     def get_id(self):
         _id = uuid.uuid5(uuid.NAMESPACE_URL, self.embed_link)
@@ -237,7 +244,7 @@ class BaseStream(ABC):
             "embed_link": self.embed_link,
             "search_titles": self.get_titles(),
             "completion_suggestions": {"input": self.get_suggestions()},
-            "title": self.get_display_title(),
+            "title": clean_title(self.get_display_title()),
             "s_name": self.s_name,
             "h_name": self.h_name,
             "poster": self.get_poster(),
