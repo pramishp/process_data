@@ -186,9 +186,10 @@ def normalizer(text):
 
 
 def concat_list(word_list, index=0, sentence="", sentences=None):
+    length = len(word_list) - 1
     if sentences is None:
         sentences = []
-    sentence += word_list[index] + " "
+    sentence = word_list[length - index] + " " + sentence
     sentences.append(sentence.strip())
     if len(word_list) == index + 1: return sentences
     index += 1
