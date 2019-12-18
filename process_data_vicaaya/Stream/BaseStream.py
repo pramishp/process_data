@@ -200,6 +200,7 @@ class BaseStream(ABC):
         return []
 
     def get_suggestions(self):
+        return list(set(self.get_title()))
         suggestions = []
         for title in self.get_titles():
             shingles = suggestion_transform(title.strip())
