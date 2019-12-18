@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-import re
+
 import PTN
 import anitopy
 
@@ -56,16 +56,19 @@ def parse_episode_from_name(name):
     episode, season = None, None
     if name and not is_empty(name) and isinstance(name, str):
         try:
-            info = dict_2_default_dict(anitopy.parse(name))
-            episode = info["episode_number"]
-            season = info["anime_season"]
+            ptn_info = dict_2_default_dict(PTN.parse(name))
+            episode = ptn_info["episode"]
+            season = ptn_info["season"]
         except:
-            print("anitopy error")
             pass
         if not episode or not season:
-            ptn_info = dict_2_default_dict(PTN.parse(name))
-            episode = ptn_info["episode"] if not episode else episode
-            season = ptn_info["season"] if not season else season
+            try:
+                info = dict_2_default_dict(anitopy.parse(name))
+                episode = info["episode_number"] if not episode else episode
+                season = info["anime_season"] if not season else season
+            except:
+                print("anitopy error")
+                pass
         try:
             return {"episode": parse_episode(episode) if episode else None,
                     "season": get_number_from_string(season) if season else None}
@@ -141,7 +144,9 @@ def is_string(string):
 
 
 def get_number_from_string(text):
-    if is_empty(text) and not isinstance(text, str):
+    if isinstance(text, int):
+        return text
+    if is_empty(text) or not isinstance(text, str):
         return None
     number = None
     try:
@@ -171,7 +176,6 @@ def shingle_transform(text, min_shingle=2, max_shingle=3, split_by=" "):
         list_of_shingles_list.append([' '.join(word_list[i:i + w]) for i in range(len(word_list) - w + 1)])
     final_list = [shingle for shingles in list_of_shingles_list for shingle in shingles]
     return final_list
-
 
 def normalizer(text):
     things_2_keep = r"[a-zA-Z0-9]+"
