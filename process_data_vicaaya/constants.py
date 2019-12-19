@@ -27,7 +27,8 @@ mapper = {
 
 NAME_CLEANER_PATTERNS = [
     r"Watch\s(.*)\sOnline",
-    r"Watch (.*) Full Movie Online Free"
+    r"Watch (.*) Full Movie Online Free",
+
 ]
 
 HOST_NAME_EXCEPTION_PATTERNS = [
