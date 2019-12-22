@@ -198,10 +198,11 @@ def concat_list(word_list, index=0, sentence="", sentences=None):
 
 def suggestion_transform(text, split_by=" "):
     normalized_text = normalizer(text)
-    word_list = normalized_text.split(split_by)
-    suggestion_list = concat_list(word_list)
-    return suggestion_list
-
+    if normalized_text:
+        word_list = normalized_text.split(split_by)
+        suggestion_list = concat_list(word_list)
+        return suggestion_list
+    return []
 
 def none_to_null_transform(m_dict):
     if len(m_dict.keys()) == 0: return m_dict
